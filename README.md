@@ -43,6 +43,7 @@ Domains communicate **only via Events**, not direct method calls.
 
 ## 🗂 Project Structure
 
+```plaintext
 app/
 └── Domains/
 ├── User/
@@ -71,7 +72,7 @@ app/
 ├── Channels/
 ├── Jobs/
 └── NotificationService.php
-
+```
 ---
 
 ## 🔄 Example Business Flow (Payment Success)
