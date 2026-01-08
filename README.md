@@ -1,59 +1,153 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel eCommerce – Domain-Based Modular Architecture
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📌 Project Overview
+This project is a **real-world eCommerce platform** built with Laravel, designed to be:
+- Sellable
+- Scalable
+- Maintainable
+- Domain-driven
 
-## About Laravel
+The goal is to build a **production-ready MVP in 14 days**, then evolve it into a stable product within 2 months.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧠 Architecture Philosophy
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This project follows a **Domain-Based Modular Architecture**.
 
-## Learning Laravel
+Instead of organizing code by technical layers (Controllers, Models, Services) or UI features (Blog, Shop, Banner),
+the system is structured around **business domains**.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Each domain represents a real-world responsibility and is isolated from others.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🧩 What is a Domain?
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+A **Domain** is an independent business concept, such as:
+- User
+- Product
+- Order
+- Payment
+- Notification
 
-### Premium Partners
+Each domain owns:
+- Its data
+- Its business rules
+- Its events
+- Its actions
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Domains communicate **only via Events**, not direct method calls.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🗂 Project Structure
 
-## Code of Conduct
+app/
+└── Domains/
+├── User/
+│ ├── Models/
+│ ├── Actions/
+│ ├── Policies/
+│ └── UserService.php
+│
+├── Product/
+│ ├── Models/
+│ ├── Actions/
+│ └── ProductService.php
+│
+├── Order/
+│ ├── Models/
+│ ├── Events/
+│ ├── Listeners/
+│ └── OrderService.php
+│
+├── Payment/
+│ ├── Gateways/
+│ ├── Events/
+│ └── PaymentService.php
+│
+└── Notification/
+├── Channels/
+├── Jobs/
+└── NotificationService.php
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🔄 Example Business Flow (Payment Success)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. `PaymentDomain` fires `PaymentSucceeded`
+2. `OrderDomain` listens → marks order as `paid`
+3. `ProductDomain` listens → reduces stock
+4. `NotificationDomain` listens → sends SMS (queued)
 
-## License
+No domain directly touches another domain’s logic.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🎯 MVP Scope (14 Days)
+
+### Week 1 – Core Business
+- User Authentication (Admin / Customer)
+- Product Management (simple product)
+- Cart
+- Order Creation
+- Payment Integration (real gateway)
+- Order Status Flow
+
+### Week 2 – Real World Operations
+- SMS Notification (Queue-based)
+- Order Tracking for Customers
+- Admin Order Management
+- Basic Admin Panel
+
+---
+
+## ⏱ Project Timeline
+
+| Phase | Duration |
+|------|----------|
+| MVP | 14 Days |
+| Sellable Version | 1 Month |
+| Stable & Scalable Version | 2 Months |
+
+---
+
+## 🧪 Development Strategy
+
+- Domain isolation first
+- Events over direct calls
+- Queues for all external services
+- No premature optimization
+- No over-engineering in MVP
+
+---
+
+## 🚀 Planned Future Features
+
+- Blog & Content System
+- SEO Optimization
+- WhatsApp & Telegram Notifications
+- Advanced Product Attributes
+- CRM & Lead Management
+- Banner & Advertisement System
+- Form Builder
+
+---
+
+## 📖 Progress Log
+
+This README will be updated step-by-step to document:
+- What was implemented
+- Why decisions were made
+- How the system evolved
+
+Each commit represents a meaningful business milestone.
+
+---
+
+## 🧠 Final Note
+
+This project is not a demo.
+It is a **real product under real constraints**, built with long-term growth in mind.
+
